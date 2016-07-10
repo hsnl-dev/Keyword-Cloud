@@ -65,6 +65,39 @@ curl http://localhost:9292/api/v1/users/{uid} \
 }
 ```
 
+### File Routes
+#### Overview
+
+| Method  | URL                                           | What to do                                     |
+| ------  | ----------------------------------------------| ---------------------------------------------- |
+| POST    | /api/v1/accounts/{uid}/{course_id}/concepts/  | create new file(course concept) for the course |
+
+#### Example
+
+**POST /api/v1/accounts/:uid/:course_id/concepts/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/concepts/ \
+ 	-X POST \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "document": "XXXXXXXXOOOOOOOO"
+	}'
+```
+
+```
+{
+  "type": "concepts",
+  "id": 1,
+  "data": {
+    "checksum": null,
+    "document_base64": "abcdefghijklmopqustu",
+    "document": "XXXXXXXXOOOOOOOO"
+  }
+}
+```
+
 ## Install
 
 Install this API by cloning the *relevant branch* and installing required gems:

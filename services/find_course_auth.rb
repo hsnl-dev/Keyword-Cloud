@@ -14,7 +14,7 @@ class FindCourseAuth
         course_result['name'] = Course.where(id: cid['cid']).first.course_name
         courseInfo.push(cid.merge(course_result))
       else
-        get_courseInfo = "SELECT name FROM course WHERE id = #{cid['cid']}"
+        get_courseInfo = "SELECT name FROM course WHERE id = #{cid['cid']} AND deleted = 0"
         course_result = db.query(get_courseInfo)
         courseInfo.push(cid.merge(course_result.first))
         course = Course.new()
