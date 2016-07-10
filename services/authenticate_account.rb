@@ -8,7 +8,7 @@ class AuthenticateAccount
 
     db = Mysql2::Client.new(host: ENV['HOSTNAME'], username: ENV['USERNAME'],
                             password: ENV['PASSWORD'], database: ENV['DATABASE'])
-    sql = "SELECT id,password FROM usr_account WHERE email = '#{account}'"
+    sql = "SELECT id,password FROM usr_account WHERE email = '#{account}' AND deleted = 0"
     result = db.query(sql)
     record = result.first
     encrypt = Digest::MD5.hexdigest(password)
