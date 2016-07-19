@@ -13,6 +13,7 @@ gem 'hirb'
 gem 'rack-ssl-enforcer'
 gem 'jose'
 gem 'http'
+gem 'rubyzip'
 
 group :development do
   gem 'rerun'
