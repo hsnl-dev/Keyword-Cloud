@@ -71,7 +71,8 @@ curl http://localhost:9292/api/v1/accounts/{uid} \
 | Method  | URL                                           | What to do                                     |
 | ------  | ----------------------------------------------| ---------------------------------------------- |
 | POST    | /api/v1/accounts/{uid}/{course_id}/concepts/  | create new file(course concept) for the course |
-| POST    | /api/v1/accounts/{uid}/{course_id}/slides/  | create new folder(course slides) for the course |
+| POST    | /api/v1/accounts/{uid}/{course_id}/folders/  | create new folder(slide or subtitle) for the course |
+| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | create new file for folder |
 
 #### Example
 
@@ -98,15 +99,16 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/concepts/ \
   }
 }
 ```
-**POST /api/v1/accounts/:uid/:course_id/slides/**
+**POST /api/v1/accounts/:uid/:course_id/folders/**
 
 ```shell
-$ curl http://localhost:9292/api/v1/accounts/1/1/slides/ \
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/ \
  	-X POST \
 	-H 'content-type: application/json' \
 	-H 'authorization: bearer {auth_token}' \
 	-d '{
-    "folder_url": "XXXXXXXXOOOOOOOO"
+    "folder_url": "XXXXXXXXOOOOOOOO",
+		"folder_type": "subtitle"
 	}'
 ```
 
@@ -116,8 +118,10 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/slides/ \
     "type": "folder",
     "id": 1,
     "attributes": {
+      "folder_type": "subtitle",
+      "course_id": 1,
       "chapter_order": 1,
-      "name": "課程簡介",
+      "name": "物聯網概論課程簡介",
       "folder_url": "XXXXXXXXOOOOOOOO"
     }
   },
@@ -125,14 +129,53 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/slides/ \
     "type": "folder",
     "id": 2,
     "attributes": {
+      "folder_type": "subtitle",
+      "course_id": 1,
       "chapter_order": 2,
-      "name": "第1週：網路安全概念一 ",
+      "name": "第 1週: 物聯網基礎架構與應用簡介",
+      "folder_url": "XXXXXXXXOOOOOOOO"
+    }
+  },
+  {
+    "type": "folder",
+    "id": 3,
+    "attributes": {
+      "folder_type": "subtitle",
+      "course_id": 1,
+      "chapter_order": 3,
+      "name": "第 2週: 感知層/網路層/應用層技術  ",
       "folder_url": "XXXXXXXXOOOOOOOO"
     }
   }
 ]
 ```
 
+**POST /api/v1/accounts/:uid/:course_id/folders/:folder_id/files/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/files/ \
+ 	-X POST \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "filename": "1.txt",
+		"document": "XXXXXXXXOOOOOOOO"
+	}'
+```
+
+```
+{
+  "type": "files",
+  "id": "978e09d4-5eb4-4b1c-a4a1-37cd6fbd6aa0",
+  "data": {
+    "folder_id": 3,
+    "filename": "1.txt",
+    "checksum": null,
+    "document_base64": "MTExMTExMTExMTEx",
+    "document": "111111111111"
+  }
+}
+```
 ## Install
 
 Install this API by cloning the *relevant branch* and installing required gems:

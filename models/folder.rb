@@ -2,16 +2,17 @@ require 'json'
 require 'sequel'
 
 # Holds a Folder's information
-class SlideFolder < Sequel::Model
+class Folder < Sequel::Model
   plugin :timestamps, update_on_create: true
+  set_allowed_columns :name
 
-  one_to_many :slide_files,
-              class: :Slide,
-              key: :slide_folders_id
+  one_to_many :simple_files,
+              class: :SimpleFile,
+              key: :folder_id
 
   many_to_one :course, class: :Course
 
-  plugin :association_dependencies, slide_files: :destroy
+  plugin :association_dependencies, simple_files: :destroy
 
   def folder_url
     SecureDB.decrypt(folder_url_encrypted)
@@ -25,6 +26,7 @@ class SlideFolder < Sequel::Model
     JSON({  type: 'folder',
             id: id,
             attributes: {
+              folder_type: folder_type,
               course_id: course_id,
               chapter_order: chapter_order,
               name: name,

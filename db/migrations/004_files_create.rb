@@ -2,9 +2,9 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:slides) do
+    create_table(:simple_files) do
       String :id, type: :uuid, primary_key: true
-      foreign_key :slide_folders_id, :slide_folders
+      foreign_key :folder_id, :folders
 
       String :filename
       String :document_encrypted, text: true
@@ -12,7 +12,6 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:filename]
     end
   end
 end

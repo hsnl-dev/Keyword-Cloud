@@ -8,8 +8,8 @@ class Course < Sequel::Model
               class: :Concept,
               key: :course_id
 
-  one_to_many :course_slide_folders,
-               class: :SlideFolder,
+  one_to_many :course_folders,
+               class: :Folder,
                key: :course_id
 
   def to_json(options = {})
