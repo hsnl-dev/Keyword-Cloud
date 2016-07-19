@@ -2,10 +2,11 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:slide_folders) do
+    create_table(:folders) do
       primary_key :id
       foreign_key :course_id, :courses
 
+      String :folder_type
       Integer :chapter_order
       String :name
       String :folder_url_encrypted, unique: true
