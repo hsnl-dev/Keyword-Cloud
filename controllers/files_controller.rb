@@ -18,15 +18,15 @@ class KeywordCloudAPI < Sinatra::Base
     saved_file.to_json
   end
 
-  post '/api/v1/accounts/:uid/:course_id/slides/:folder_id/files/?' do
+  post '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/?' do
     content_type 'application/json'
     begin
       uid = params[:uid]
       halt 401 unless authorized_account?(env, uid)
 
       new_data = JSON.parse(request.body.read)
-      folder = SlideFolder[params[:folder_id]]
-      saved_file = CreateFileForSlide.call(
+      folder = Folder[params[:folder_id]]
+      saved_file = CreateFileForFolder.call(
         folder: folder,
         filename: new_data['filename'],
         document: new_data['document'])
