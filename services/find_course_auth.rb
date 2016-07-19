@@ -23,5 +23,6 @@ class FindCourseAuth
         course.save
       end
     end
+    courseInfo
   end
 end
