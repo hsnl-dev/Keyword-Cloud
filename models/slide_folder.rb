@@ -5,10 +5,13 @@ require 'sequel'
 class SlideFolder < Sequel::Model
   plugin :timestamps, update_on_create: true
 
-  one_to_many :simple_files
+  one_to_many :slide_files,
+              class: :Slide,
+              key: :slide_folders_id
+
   many_to_one :course, class: :Course
 
-  plugin :association_dependencies, simple_files: :destroy
+  plugin :association_dependencies, slide_files: :destroy
 
   def folder_url
     SecureDB.decrypt(folder_url_encrypted)
@@ -22,6 +25,7 @@ class SlideFolder < Sequel::Model
     JSON({  type: 'folder',
             id: id,
             attributes: {
+              course_id: course_id,
               chapter_order: chapter_order,
               name: name,
               folder_url: folder_url
