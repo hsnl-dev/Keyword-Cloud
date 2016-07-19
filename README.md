@@ -41,7 +41,7 @@ $ curl http://localhost:9292/api/v1/accounts/authenticate \
 **GET /api/v1/accounts/{uid}**
 
 ```shell
-curl http://localhost:9292/api/v1/users/{uid} \
+curl http://localhost:9292/api/v1/accounts/{uid} \
 	-H 'content-type: application/json' \
 	-H 'authorization: bearer {auth_token}'
 ```
@@ -71,6 +71,7 @@ curl http://localhost:9292/api/v1/users/{uid} \
 | Method  | URL                                           | What to do                                     |
 | ------  | ----------------------------------------------| ---------------------------------------------- |
 | POST    | /api/v1/accounts/{uid}/{course_id}/concepts/  | create new file(course concept) for the course |
+| POST    | /api/v1/accounts/{uid}/{course_id}/slides/  | create new folder(course slides) for the course |
 
 #### Example
 
@@ -96,6 +97,40 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/concepts/ \
     "document": "XXXXXXXXOOOOOOOO"
   }
 }
+```
+**POST /api/v1/accounts/:uid/:course_id/slides/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/slides/ \
+ 	-X POST \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "folder_url": "XXXXXXXXOOOOOOOO"
+	}'
+```
+
+```
+[
+  {
+    "type": "folder",
+    "id": 1,
+    "attributes": {
+      "chapter_order": 1,
+      "name": "課程簡介",
+      "folder_url": "XXXXXXXXOOOOOOOO"
+    }
+  },
+  {
+    "type": "folder",
+    "id": 2,
+    "attributes": {
+      "chapter_order": 2,
+      "name": "第1週：網路安全概念一 ",
+      "folder_url": "XXXXXXXXOOOOOOOO"
+    }
+  }
+]
 ```
 
 ## Install

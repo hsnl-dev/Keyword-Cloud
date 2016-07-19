@@ -18,7 +18,7 @@ class KeywordCloudAPI < Sinatra::Base
     saved_file.to_json
   end
 
-  post '/api/v1/accounts/:uid/:course_id/slide/?' do
+  post '/api/v1/accounts/:uid/:course_id/slides/?' do
     content_type 'application/json'
     begin
       uid = params[:uid]
