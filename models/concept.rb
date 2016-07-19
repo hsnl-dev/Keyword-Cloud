@@ -4,9 +4,11 @@ require 'sequel'
 
 # Holds a full file file's information
 class Concept < Sequel::Model
+  plugin :uuid, field: :id
+
   plugin :timestamps, update_on_create: true
 
-  one_to_one :owner, class: :Course
+  one_to_one :course, class: :Course
 
   def document=(doc_plaintext)
     self.document_encrypted = SecureDB.encrypt(doc_plaintext) if doc_plaintext
