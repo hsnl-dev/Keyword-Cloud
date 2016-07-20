@@ -14,12 +14,9 @@ gem 'rack-ssl-enforcer'
 gem 'jose'
 gem 'http'
 
+
 group :development do
   gem 'rerun'
   gem 'sqlite3'
   gem 'config_env'
-end
-
-group :production do
-  gem 'pg'
 end
