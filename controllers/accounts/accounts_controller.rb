@@ -1,3 +1,4 @@
+# show authorized courses of the account
 class KeywordCloudAPI < Sinatra::Base
   get '/api/v1/accounts/:uid' do
     content_type 'application/json'

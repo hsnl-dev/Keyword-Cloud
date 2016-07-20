@@ -19,4 +19,32 @@ class KeywordCloudAPI < Sinatra::Base
     status 201
     saved_folder.to_json
   end
+
+  get '/api/v1/accounts/:uid/:course_id/:folder_type/?' do
+    content_type 'application/json'
+    begin
+      uid = params[:uid]
+      course_id = params[:course_id]
+      folder_type = params[:folder_type]
+      halt 401 unless authorized_account?(env, uid)
+
+      folder = Folder.where(course_id: course_id, folder_type: folder_type).all
+      folderInfo = folder.map do |s|
+        {
+          'id' => s.id,
+          'data' => {
+            'course_id' => s.course_id,
+            'folder_type' => s.folder_type,
+            'chapter_order' => s.chapter_order,
+            'name' => s.name,
+            'folder_url_encrypted' => s.folder_url_encrypted
+          }
+        }
+      end
+      JSON.pretty_generate(data: folderInfo)
+    rescue => e
+      logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
+      halt 404
+    end
+  end
 end
