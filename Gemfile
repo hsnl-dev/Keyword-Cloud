@@ -20,3 +20,7 @@ group :development do
   gem 'sqlite3'
   gem 'config_env'
 end
+
+group :production do
+  gem 'pg'
+end
