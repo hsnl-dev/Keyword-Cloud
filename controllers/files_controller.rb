@@ -1,48 +1,4 @@
 class KeywordCloudAPI < Sinatra::Base
-  post '/api/v1/accounts/:uid/:course_id/concepts/?' do
-    content_type 'application/json'
-    begin
-      uid = params[:uid]
-      halt 401 unless authorized_account?(env, uid)
-
-      course_id = params[:course_id]
-      new_data = JSON.parse(request.body.read)
-      saved_file = CreateConcepts.call(
-        course_id: course_id,
-        document: new_data['document'])
-    rescue => e
-      logger.info "FAILED to create new file: #{e.inspect}"
-      halt 400
-    end
-    status 201
-    saved_file.to_json
-  end
-
-  get '/api/v1/accounts/:uid/:course_id/concepts/?' do
-    content_type 'application/json'
-    begin
-      uid = params[:uid]
-      course_id = params[:course_id]
-      halt 401 unless authorized_account?(env, uid)
-
-      concept = Concept.where(course_id: course_id).all
-      conceptInfo = concept.map do |s|
-        {
-          'id' => s.id,
-          'data' => {
-            'course_id' => s.course_id,
-            'document_encrypted' => s.document_encrypted,
-            'checksum' => s.checksum
-          }
-        }
-      end
-      JSON.pretty_generate(data: conceptInfo)
-    rescue => e
-      logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
-      halt 404
-    end
-  end
-
   post '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/?' do
     content_type 'application/json'
     begin
