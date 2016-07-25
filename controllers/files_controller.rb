@@ -26,19 +26,19 @@ class KeywordCloudAPI < Sinatra::Base
       uid = params[:uid]
       folder_id = params[:folder_id]
       halt 401 unless authorized_account?(env, uid)
+      folder_name = Folder.where(id: folder_id).first.name
       simplefile = SimpleFile.where(folder_id: folder_id).all
       fileInfo = simplefile.map do |s|
         {
           'id' => s.id,
           'data' => {
-            'folder_id' => s.folder_id,
             'filename' => s.filename,
             'document_encrypted' => s.document_encrypted,
             'checksum' => s.checksum
           }
         }
       end
-      JSON.pretty_generate(data: fileInfo)
+      JSON.pretty_generate(folder_name: folder_name, folder_id: folder_id, data: fileInfo)
     rescue => e
       logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
       halt 404
