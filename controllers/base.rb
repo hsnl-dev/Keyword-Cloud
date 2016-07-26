@@ -17,6 +17,11 @@ class KeywordCloudAPI < Sinatra::Base
     false
   end
 
+  before do
+    host_url = "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
+    @request_url = URI.join(host_url, request.path.to_s)
+  end
+
   get '/?' do
     'KeywordCloud web service is up and running at /api/v1'
   end

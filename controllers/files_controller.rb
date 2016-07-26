@@ -24,6 +24,7 @@ class KeywordCloudAPI < Sinatra::Base
     content_type 'application/json'
     begin
       uid = params[:uid]
+      course_id = params[:course_id]
       folder_id = params[:folder_id]
       halt 401 unless authorized_account?(env, uid)
       folder_name = Folder.where(id: folder_id).first.name
@@ -38,10 +39,43 @@ class KeywordCloudAPI < Sinatra::Base
           }
         }
       end
-      JSON.pretty_generate(folder_name: folder_name, folder_id: folder_id, data: fileInfo)
+      JSON.pretty_generate(course_id: course_id, folder_name: folder_name, folder_id: folder_id, data: fileInfo)
     rescue => e
       logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
       halt 404
     end
   end
+
+  # get '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/:file_id/?' do
+  #   content_type 'application/json'
+  #   begin
+  #     uid = params[:uid]
+  #     folder_id = params[:folder_id]
+  #     file_id = params[:file_id]
+  #     halt 401 unless authorized_account?(env, uid)
+  #     doc_url = URI.join(@request_url.to_s + '/', 'document')
+  #     simplefile = SimpleFile.where(folder_id: folder_id, id: file_id).first
+  #     halt(404, 'Files not found') unless simplefile
+  #     JSON.pretty_generate(data: {
+  #                            file: simplefile,
+  #                            links: { document: doc_url }
+  #                          })
+  #   rescue => e
+  #     logger.info "FAILED to process GET file request: #{e.inspect}"
+  #     halt 404
+  #   end
+  # end
+  #
+  # get '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/:file_id/document' do
+  #   content_type 'text/plain'
+  #
+  #   begin
+  #     SimpleFile.where(folder_id: params[:folder_id], id: params[:file_id])
+  #               .first
+  #               .document
+  #   rescue => e
+  #     logger.info "FAILED to process GET file document: #{e.inspect}"
+  #     halt 404
+  #   end
+  # end
 end
