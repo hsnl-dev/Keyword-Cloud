@@ -35,6 +35,7 @@ $ curl http://localhost:9292/api/v1/accounts/authenticate \
 | Method | URL                     | What to do                               | success |
 | ------ | ----------------------- | ---------------------------------------- | ------- |
 | GET    | /api/v1/accounts/{uid}  | get all courses about a certain account  | 200     |
+| GET    | /api/v1/accounts/{uid}/{cid}  | get course name  | 200     |
 
 #### Example
 
@@ -65,13 +66,27 @@ curl http://localhost:9292/api/v1/accounts/1 \
 }
 ```
 
+**GET /api/v1/accounts/:uid/:cid**
+
+```shell
+curl http://localhost:9292/api/v1/accounts/1/1 \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}'
+```
+
+```
+{
+  "data": "健康與人生"
+}
+```
+
 ### Folder Routes
 #### Overview
 
 | Method  | URL                                           | What to do                                     |
 | ------  | ----------------------------------------------| ---------------------------------------------- |
-| GET    | /api/v1/accounts/{uid}/{course_id}/{folder_type}/  | folder of this course (folder type : subtitles or slides) |
-| POST    | /api/v1/accounts/{uid}/{course_id}/folders/  | create new folder(slide or subtitle) for the course |
+| GET    | /api/v1/accounts/{uid}/{course_id}/{folder_type}/  | folder of this course (folder type : subtitles or slides or concepts) |
+| POST    | /api/v1/accounts/{uid}/{course_id}/{folder_type}/  | create new folder(slide or subtitle or concepts) for the course |
 
 #### Example
 
@@ -110,7 +125,7 @@ curl http://localhost:9292/api/v1/accounts/1/1/subtitles \
 }
 ```
 
-**POST /api/v1/accounts/:uid/:course_id/folders/**
+**POST /api/v1/accounts/:uid/:course_id/:folder_type**
 
 ```shell
 $ curl http://localhost:9292/api/v1/accounts/1/1/folders/ \
@@ -166,35 +181,10 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/folders/ \
 
 | Method  | URL                                           | What to do                                     |
 | ------  | ----------------------------------------------| ---------------------------------------------- |
-| GET     | /api/v1/accounts/{uid}/{course_id}/concepts/            | concept file of this course |
 | GET     | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}  |  file of this course |
-| POST    | /api/v1/accounts/{uid}/{course_id}/concepts/  | create new file(course concept) for the course |
 | POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | create new file for folder |
 
 #### Example
-
-**GET /api/v1/accounts/:uid/:course_id/concepts/**
-
-```shell
-curl http://localhost:9292/api/v1/accounts/1/1/concepts \
-	-H 'content-type: application/json' \
-	-H 'authorization: bearer {auth_token}'
-```
-
-```
-{
-  "data": [
-    {
-      "id": "0b93d3b5-5f16-4e74-9ada-932f8ae9b2cf",
-      "data": {
-        "course_id": 1,
-        "document_encrypted": "/yv8fOYMmgi/PkaM9nJipza7Phjc7Bic/CzbLllzuagaNYxSEhhb45E6YUPYtIGs3PYQ",
-        "checksum": null
-      }
-    }
-  ]
-}
-```
 
 **GET /api/v1/accounts/:uid/:course_id/folders/:folder_id**
 
@@ -226,30 +216,6 @@ curl http://localhost:9292/api/v1/accounts/1/1/folders/3 \
       }
     }
   ]
-}
-```
-
-**POST /api/v1/accounts/:uid/:course_id/concepts/**
-
-```shell
-$ curl http://localhost:9292/api/v1/accounts/1/1/concepts/ \
- 	-X POST \
-	-H 'content-type: application/json' \
-	-H 'authorization: bearer {auth_token}' \
-	-d '{
-    "document": "XXXXXXXXOOOOOOOO"
-	}'
-```
-
-```
-{
-  "type": "concepts",
-  "id": 1,
-  "data": {
-    "checksum": null,
-    "document_base64": "abcdefghijklmopqustu",
-    "document": "XXXXXXXXOOOOOOOO"
-  }
 }
 ```
 
