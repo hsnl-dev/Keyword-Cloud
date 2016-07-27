@@ -28,6 +28,7 @@ class Folder < Sequel::Model
             attributes: {
               folder_type: folder_type,
               course_id: course_id,
+              chapter_id: chapter_id,
               chapter_order: chapter_order,
               name: name,
               folder_url: folder_url

@@ -28,7 +28,7 @@ class KeywordCloudAPI < Sinatra::Base
       course_id = params[:course_id]
       folder_type = params[:folder_type]
       halt 401 unless authorized_account?(env, uid)
-      
+
 
       folder = Folder.where(course_id: course_id, folder_type: folder_type).all
       folderInfo = folder.map do |s|

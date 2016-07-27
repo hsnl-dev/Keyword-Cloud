@@ -7,6 +7,7 @@ Sequel.migration do
       foreign_key :course_id, :courses
 
       String :folder_type
+      String :chapter_id
       Integer :chapter_order
       String :name
       String :folder_url_encrypted, unique: true
