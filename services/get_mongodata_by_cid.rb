@@ -14,7 +14,7 @@ class GetMongoDataByCid < Sinatra::Base
     data = db[ENV['MONGODB_COLLECTION_NAME']]
            .find({'courseId' => course_id.to_i,
                   'action' => 'seek'
-                  }).limit(1).to_a
+                  }).to_a
     csv_path = "mongoDB/" + course_id + ".csv"
     CSV.open(csv_path , "w") do |csv|
       csv << ["userId", "videoStartTime", "videoEndTime", "videoTotalTime","videoId","time"]
