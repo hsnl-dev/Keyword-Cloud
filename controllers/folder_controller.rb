@@ -29,7 +29,7 @@ class KeywordCloudAPI < Sinatra::Base
       folder_type = params[:folder_type]
       halt 401 unless authorized_account?(env, uid)
 
-
+      course_name = Course.where(id: course_id).first.course_name
       folder = Folder.where(course_id: course_id, folder_type: folder_type).all
       folderInfo = folder.map do |s|
         {
@@ -43,7 +43,7 @@ class KeywordCloudAPI < Sinatra::Base
           }
         }
       end
-      JSON.pretty_generate(data: folderInfo)
+      JSON.pretty_generate(course_name: course_name, data: folderInfo)
     rescue => e
       logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
       halt 404

@@ -3,6 +3,7 @@ GEM
   specs:
     addressable (2.4.0)
     bond (0.5.1)
+    bson (4.1.1)
     concurrent-ruby (1.0.2)
     config_env (0.1.2)
     daemons (1.2.3)
@@ -29,6 +30,8 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    mongo (2.2.7)
+      bson (~> 4.0)
     mysql2 (0.4.4)
     pg (0.18.4)
     rack (1.6.4)
@@ -85,6 +88,7 @@ DEPENDENCIES
   http
   jose
   json
+  mongo
   mysql2
   pg
   rack-ssl-enforcer
