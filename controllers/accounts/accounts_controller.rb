@@ -19,7 +19,7 @@ class KeywordCloudAPI < Sinatra::Base
       uid = params[:uid]
       course_id = params[:course_id]
       halt 401 unless authorized_account?(env, uid)
-      name = FindCourse.call(course_id: course_id)
+      name = Course.where(id: course_id).first.course_name
       JSON.pretty_generate(data: name)
     rescue => e
       logger.info "FAILED to find authorized courses for account: #{e}"
