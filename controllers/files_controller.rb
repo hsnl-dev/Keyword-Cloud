@@ -20,6 +20,26 @@ class KeywordCloudAPI < Sinatra::Base
     saved_file.to_json
   end
 
+  post '/api/v1/accounts/:uid/:course_id/folders/:folder_id/?' do
+    content_type 'application/json'
+    begin
+      uid = params[:uid]
+      halt 401 unless authorized_account?(env, uid)
+      chapter_id = Folder[params[:folder_id]].chapter_id
+      course_video_url = FindCourseVideo.call(
+        course_id: params[:course_id],
+        chapter_id: chapter_id,
+        folder_id: params[:folder_id])
+
+    rescue => e
+      logger.info "FAILED to create new file: #{e.inspect}"
+      halt 400
+    end
+
+    status 201
+    course_video_url.to_json
+  end
+
   get '/api/v1/accounts/:uid/:course_id/folders/:folder_id' do
     content_type 'application/json'
     begin
