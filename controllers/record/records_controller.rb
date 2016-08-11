@@ -7,7 +7,10 @@ class KeywordCloudAPI < Sinatra::Base
   get '/api/v1/mongo/:uid/:course_id' do
     content_type :json
     begin
-      data = GetMongoDataByCid.call(course_id: params[:course_id])
+      uid = params[:uid]
+      halt 401 unless authorized_account?(env, uid)
+      FindVideoRecord.call(course_id: params[:course_id])
+      JSON.pretty_generate(status: 'success')
     rescue => e
       logger.info "FAILED to connect mongodb: #{e}"
       halt 404

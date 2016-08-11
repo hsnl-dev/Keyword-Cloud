@@ -2,14 +2,13 @@ require 'sinatra'
 require 'mongo'
 require 'csv'
 
-# 目前用course_id = 848  chapter_id = 5209
+# 目前用course_id = 848
 # 只抓出action = "seek"的資料然後寫成.csv檔，再存到mongodb的資料夾
 # 之後還要修改：資料筆數、以及不需要用chapter_id
 
-class GetMongoDataByCid < Sinatra::Base
+class FindVideoRecord < Sinatra::Base
   def self.call(course_id:)
     Mongo::Logger.logger.level = ::Logger::FATAL
-
     db = Mongo::Client.new( ENV['MONGODB_HOSTNAME'], :database => ENV['MONGODB_DATABASE'])
     data = db[ENV['MONGODB_COLLECTION_NAME']]
            .find({'courseId' => course_id.to_i,
