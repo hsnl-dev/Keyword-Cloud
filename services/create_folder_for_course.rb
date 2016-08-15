@@ -4,10 +4,8 @@ require 'mysql2'
 class CreateFolderForCourse
   def self.call(course_id:, folder_type:, folder_url: nil)
     return nil unless course_id
-    db = Mysql2::Client.new(host: ENV['HOSTNAME'], username: ENV['USERNAME'],
-                            password: ENV['PASSWORD'], database: ENV['DATABASE'])
-    sql = "SELECT id,name,chapter_order FROM chapter WHERE cid = #{course_id} AND deleted = 0"
-    result = db.query(sql)
+    response = HTTP.get("#{ENV['PROXY_API']}/app/chapter/#{course_id}")
+    result = response.parse['data']
     result.each do |chapterInfo|
       if Folder.where(chapter_id: chapterInfo['id'], chapter_order: chapterInfo['chapter_order'], name: chapterInfo['name'], folder_type: folder_type).first != nil
         folder = Folder.where(course_id: course_id, chapter_id: chapterInfo['chapter_id']).first
