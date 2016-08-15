@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import dateutil.parser as dp
 
 
@@ -28,9 +29,12 @@ def filter_rawdata(path):
 
 
 def vid_dict(result):
+    vid_dict = {}
     timeSequence = 14  # every 14 second is a sequence
     vid_list = result.videoId.unique()
     for i in range(len(vid_list)):
+        time_count = {}
+        data = []
         filtered = result[(result['videoId'] == vid_list[i])]
         filtered = filtered.reset_index(drop=True)
         # count sequence num
@@ -41,9 +45,20 @@ def vid_dict(result):
             remain = round(float(videoEndTime)) % timeSequence
             if remain > 0:
                 ratio = round(ratio + 1)
-            print ratio
+            # compute count
+            if time_count.get(ratio) is None:
+                time_count[ratio] = 1
+            else:
+                time_count[ratio] += 1
 
+        for num in range(int(totalSeq + 2)):
+            if time_count.get(num) is None:
+                data.append([timeSequence * num, 0])
+            else:
+                data.append([timeSequence * num, time_count[num]])
 
-path = '../mongoDB/848.csv'
-result = filter_rawdata(path)
-vid_dict(result)
+        columns = ['time', 'count']
+        data = np.array(data)
+        vid_df = pd.DataFrame(data, columns=columns)
+        vid_dict[vid_list[i]] = vid_df
+    return vid_dict
