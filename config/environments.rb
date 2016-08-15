@@ -20,9 +20,3 @@ configure do
   require 'hirb'
   Hirb.enable
 end
-
-# configure :production do
-#   require "rest-client"
-#     RestClient.proxy = ENV["PROXIMO_URL"] if ENV["PROXIMO_URL"]
-#     RestClient::Resource.new(ENV["PROXY_URL"] || "https://httpbin.org")
-# end
