@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'rack/ssl-enforcer'
 
 # Configuration Sharing Web Service
 class KeywordCloudAPI < Sinatra::Base
