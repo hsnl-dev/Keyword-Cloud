@@ -62,7 +62,7 @@ class KeywordCloudAPI < Sinatra::Base
       end
       JSON.pretty_generate(course_id: course_id, folder_name: folder_name, folder_id: folder_id, folder_type: folder_type, data: fileInfo)
     rescue => e
-      logger.info "FAILED to find secrets for user #{params[:owner_id]}: #{e}"
+      logger.info "FAILED to find file for chapter #{folder_id}: #{e}"
       halt 404
     end
   end

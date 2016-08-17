@@ -3,6 +3,11 @@ require 'json'
 
 # Configuration Sharing Web Service
 class KeywordCloudAPI < Sinatra::Base
+  enable :logging
+
+  configure :production do
+    use Rack::SslEnforcer
+  end
 
   def authenticated_account(env)
     scheme, auth_token = env['HTTP_AUTHORIZATION'].split(' ')
