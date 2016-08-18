@@ -8,7 +8,7 @@ Sequel.migration do
 
       String :folder_type
       String :chapter_id
-      Integer :chapter_order
+      String :chapter_order
       String :name
       String :folder_url_encrypted, unique: true
       DateTime :created_at

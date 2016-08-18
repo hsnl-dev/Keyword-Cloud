@@ -7,7 +7,7 @@ Sequel.migration do
       foreign_key :course_id, :courses
 
       String :chapter_id
-      Integer :chapter_order
+      String :chapter_order
       String :video_id
       Integer :video_order
       String :name
