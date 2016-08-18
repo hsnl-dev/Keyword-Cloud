@@ -11,7 +11,7 @@ class CreateFolderForCourse
         folder = Folder.where(course_id: course_id, chapter_id: chapterInfo['chapter_id']).first
       else
         folder = Folder.new()
-        course = Course.where(course_id: course_id).first
+        course = Course[course_id]
         folder.chapter_order = chapterInfo['chapter_order']
         folder.chapter_id = chapterInfo['id']
         folder.name = chapterInfo['name']
@@ -20,7 +20,6 @@ class CreateFolderForCourse
         course.add_course_folder(folder)
       end
     end
-    course_id = Course.where(course_id: course_id).first.id
     Folder.where(course_id: course_id, folder_type: folder_type).all
   end
 end
