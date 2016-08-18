@@ -21,7 +21,4 @@ end
 configure do
   require 'sequel'
   DB = Sequel.connect(ENV['DATABASE_URL'])
-
-  require 'hirb'
-  Hirb.enable
 end
