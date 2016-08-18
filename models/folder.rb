@@ -10,7 +10,7 @@ class Folder < Sequel::Model
               class: :SimpleFile,
               key: :folder_id
 
-  many_to_one :course, class: :Course
+  many_to_one :courses, class: :Course
 
   plugin :association_dependencies, simple_files: :destroy
 
