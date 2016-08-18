@@ -14,6 +14,7 @@ class Course < Sequel::Model
   def to_json(options = {})
     JSON({  type: 'courses',
             id: id,
+            course_id: course_id,
             course_name: course_name
           },
          options)
