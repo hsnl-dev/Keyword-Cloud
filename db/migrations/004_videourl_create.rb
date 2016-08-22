@@ -4,8 +4,8 @@ Sequel.migration do
   change do
     create_table(:videourls) do
       primary_key :id
-
-      Integer :course_id
+      foreign_key :course_id, :courses
+      
       Integer :chapter_id
       Integer :chapter_order
       Integer :video_id
