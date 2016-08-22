@@ -4,7 +4,7 @@ Sequel.migration do
   change do
     create_table(:folders) do
       primary_key :id
-      foreign_key :course_id, :courses
+      foreign_key :owner_id, :courses
 
       String :folder_type
       String :chapter_id
