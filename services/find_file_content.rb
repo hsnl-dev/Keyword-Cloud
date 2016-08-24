@@ -6,6 +6,5 @@ class FindFileContent
                     .first
                     .document
     plain = Base64.strict_decode64(doc)
-    puts plain
   end
 end
