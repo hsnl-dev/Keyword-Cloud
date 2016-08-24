@@ -67,14 +67,14 @@ class KeywordCloudAPI < Sinatra::Base
     end
   end
 
-  # get '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/:file_id/document' do
-  #   content_type 'text/plain'
-  #
-  #   begin
-  #     GetFileContent.call(id: params[:file_id], folder_id: params[:folder_id])
-  #   rescue => e
-  #     logger.info "FAILED to process GET file document: #{e.inspect}"
-  #     halt 404
-  #   end
-  # end
+  get '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/:file_id/document' do
+    content_type 'text/plain'
+
+    begin
+      FindFileContent.call(id: params[:file_id], folder_id: params[:folder_id])
+    rescue => e
+      logger.info "FAILED to process GET file document: #{e.inspect}"
+      halt 404
+    end
+  end
 end
