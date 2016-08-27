@@ -3,3 +3,5 @@ db/*.*
 .bundle/
 .DS_Store
 mongoDB
+*.pyc
+lib/dict
