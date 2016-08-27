@@ -6,5 +6,7 @@ class FindFileContent
                     .first
                     .document
     plain = Base64.strict_decode64(doc)
+    decoded = plain.force_encoding('UTF-8')
+    exec(`python script.py #{decoded}`)
   end
 end
