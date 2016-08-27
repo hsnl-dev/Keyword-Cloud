@@ -71,7 +71,8 @@ class KeywordCloudAPI < Sinatra::Base
     content_type 'text/plain'
 
     begin
-      FindFileContent.call(id: params[:file_id], folder_id: params[:folder_id])
+      content = FindFileContent.call(id: params[:file_id], folder_id: params[:folder_id])
+      JSON.pretty_generate(data: content)
     rescue => e
       logger.info "FAILED to process GET file document: #{e.inspect}"
       halt 404
