@@ -6,7 +6,6 @@ class FindCourseVideo
     result = response.parse['data']
     result.each do |urlInfo|
       if Videourl.where(course_id: course_id, chapter_id: chapter_id, video_id: urlInfo['vid']).first != nil
-        puts urlInfo['content_order'].class
         videourl = Videourl.where(course_id: course_id, chapter_id: chapter_id, video_id: urlInfo['vid']).first
       else
         videourl = Videourl.new()
