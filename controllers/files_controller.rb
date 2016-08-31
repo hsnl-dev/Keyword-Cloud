@@ -66,19 +66,4 @@ class KeywordCloudAPI < Sinatra::Base
       halt 404
     end
   end
-
-  get '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/:file_id/document' do
-    content_type 'text/plain'
-
-    begin
-      folder_type = Folder.where(id: params[:folder_id]).first.folder_type
-      if folder_type == 'slides'
-        content = SlideSegment.call(id: params[:file_id], folder_id: params[:folder_id])
-        JSON.pretty_generate(data: content)
-      end
-    rescue => e
-      logger.info "FAILED to process GET file document: #{e.inspect}"
-      halt 404
-    end
-  end
 end
