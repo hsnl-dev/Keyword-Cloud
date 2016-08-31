@@ -1,13 +1,14 @@
 require 'base64'
 
 class SlideSegment
-  def self.call(id:, folder_id:)
-    doc = SimpleFile.where(id: id, folder_id: folder_id)
-                    .first
-                    .document
-    plain = Base64.strict_decode64(doc)
-    decoded = plain.force_encoding('UTF-8')
-    string = `python3 helpers/segment.py '#{decoded}'`
-    string.split("\n")
+  def self.call(folder_id:)
+    doc = SimpleFile.where(folder_id: folder_id)
+                    .all
+    fileInfo = doc.map do |s|
+      plain = Base64.strict_decode64(s.document)
+      decoded = plain.force_encoding('UTF-8')
+      `python helpers/segment.py "#{decoded}"`
+    end
+    fileInfo
   end
 end
