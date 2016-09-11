@@ -1,6 +1,6 @@
 # show keyword
 class KeywordCloudAPI < Sinatra::Base
-  get '/api/v1/accounts/:uid/:course_id/folders/slides/segment' do
+  get '/api/v1/accounts/:uid/:course_id/:folder_id/chapter/makekeyword' do
     content_type 'application/json'
 
     begin
@@ -35,31 +35,31 @@ class KeywordCloudAPI < Sinatra::Base
     end
   end
 
-  get '/api/v1/accounts/:uid/:course_id/keyword' do
-    content_type 'application/json'
-    begin
-      uid = params[:uid]
-      course_id = params[:course_id]
-      halt 401 unless authorized_account?(env, uid)
-      keywordInfo = Keyword.where(course_id: course_id).first
-      # k = keywordInfo.map do |s|
-      #   puts s
-      #   # {
-      #   #   'id' => s.id,
-      #   #   'data' => {
-      #   #     'course_id' => s['attributes'].course_id,
-      #   #     'folder_id' => s['attributes'].folder_id,
-      #   #     'folder_type' => s['attributes'].chapter_id
-      #   #     'chapter_id' => s['attributes'].checksum
-      #   #     'chapter_name' => s['attributes'].chapter_name
-      #   #     'keyword' => s['attributes'].keyword
-      #   #   }
-      #   # }
-      # end
-      JSON.pretty_generate(data: keywordInfo)
-    rescue => e
-      logger.info "FAILED to find authorized courses for account: #{e}"
-      halt 404
-    end
-  end
+  # get '/api/v1/accounts/:uid/:course_id/keyword' do
+  #   content_type 'application/json'
+  #   begin
+  #     uid = params[:uid]
+  #     course_id = params[:course_id]
+  #     halt 401 unless authorized_account?(env, uid)
+  #     keywordInfo = Keyword.where(course_id: course_id).first
+  #     k = keywordInfo.map do |s|
+  #       puts s
+  #       # {
+  #       #   'id' => s.id,
+  #       #   'data' => {
+  #       #     'course_id' => s['attributes'].course_id,
+  #       #     'folder_id' => s['attributes'].folder_id,
+  #       #     'folder_type' => s['attributes'].chapter_id
+  #       #     'chapter_id' => s['attributes'].checksum
+  #       #     'chapter_name' => s['attributes'].chapter_name
+  #       #     'keyword' => s['attributes'].keyword
+  #       #   }
+  #       # }
+  #     end
+  #     JSON.pretty_generate(data: keywordInfo)
+  #   rescue => e
+  #     logger.info "FAILED to find authorized courses for account: #{e}"
+  #     halt 404
+  #   end
+  # end
 end
