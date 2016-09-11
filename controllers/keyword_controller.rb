@@ -50,21 +50,12 @@ class KeywordCloudAPI < Sinatra::Base
       chapter_id = params[:chapter_id]
       halt 401 unless authorized_account?(env, uid)
       name = Course.where(id: course_id).first.course_name
-      # if Keyword.where(course_id: course_id, chapter_id: chapter_id, priority:).first
-      # folderInfo = keyword_content.map do |k|
-      #   if k.folder_type == 'subtitles'
-      #   {
-      #     'id' => s.id,
-      #     'data' => {
-      #       'course_id' => s.course_id,
-      #       'folder_type' => s.folder_type,
-      #       'chapter_order' => s.chapter_order,
-      #       'name' => s.name,
-      #       'folder_url_encrypted' => s.folder_url_encrypted
-      #     }
-      #   }
-      # end
-      JSON.pretty_generate(data: name, slides: slides)
+      if Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 1).first
+        content = Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 1).first
+      else
+        content = Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 2).first
+      end
+      JSON.pretty_generate(data: name, content: content)
     rescue => e
       logger.info "FAILED to process GET file document: #{e.inspect}"
       halt 404
