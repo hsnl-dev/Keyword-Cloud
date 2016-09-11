@@ -19,10 +19,11 @@ for x in info:
 word_tfidf = {}
 delete_list = []
 for item in type_convert:
-    word_tfidf.update({item:
-                       float(type_convert.get(item)) +
-                       (float(type_convert.get(item))*(len(item.split("+"))-1)*0.5)
-                       })
+    if type_convert.get(item) != '':
+        word_tfidf.update({item:
+                           float(type_convert.get(item)) +
+                           (float(type_convert.get(item))*(len(item.split("+"))-1)*0.5)
+                           })
 # 文字串接
 pattern_ch = u'[\u4e00-\u9fa5]+'
 pattern_en = u'[A-Za-z]+'
@@ -73,11 +74,15 @@ for item1 in word_tfidf:
 
 # remove items
 for item in delete_list:
-    # print item
     word_tfidf.pop(item)
 
 # string to float
 for item in word_tfidf:
-    word_tfidf.update({item: float(word_tfidf.get(item))})
+    if float(word_tfidf.get(item)) > 3.0:
+        word_tfidf.update({item: float(word_tfidf.get(item))})
+
+for item in list(word_tfidf):
+    if float(word_tfidf.get(item)) < 4.0:
+        word_tfidf.pop(item)
 
 print(word_tfidf)

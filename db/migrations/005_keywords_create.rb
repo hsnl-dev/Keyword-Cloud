@@ -10,6 +10,7 @@ Sequel.migration do
       Integer :chapter_id
       String :chapter_name
       String :folder_type
+      Integer :priority
       String :keyword
       DateTime :created_at
       DateTime :updated_at

@@ -13,6 +13,7 @@ class Keyword < Sequel::Model
             attributes: {
               course_id: course_id,
               folder_id: folder_id,
+              priority: priority,
               folder_type: folder_type,
               chapter_id: chapter_id,
               chapter_name: chapter_name,
