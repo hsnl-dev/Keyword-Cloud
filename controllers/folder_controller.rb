@@ -38,6 +38,7 @@ class KeywordCloudAPI < Sinatra::Base
             'course_id' => s.course_id,
             'folder_type' => s.folder_type,
             'chapter_order' => s.chapter_order,
+            'chapter_id' => s.chapter_id,
             'name' => s.name,
             'folder_url_encrypted' => s.folder_url_encrypted
           }
