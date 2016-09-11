@@ -9,7 +9,6 @@ class FindCourseVideo
         videourl = Videourl.where(course_id: course_id, chapter_id: chapter_id, video_id: urlInfo['vid']).first
       else
         videourl = Videourl.new()
-        # videourl.course_id = course_id.to_i
         course = Course[course_id]
         videourl.chapter_id = chapter_id.to_i
         videourl.chapter_order = urlInfo['chapter_order']
@@ -17,7 +16,6 @@ class FindCourseVideo
         videourl.video_order = urlInfo['content_order']
         videourl.name = urlInfo['name']
         videourl.video_url = urlInfo['urls']
-        # videourl.save
         course.add_course_videourl(videourl)
       end
     end
