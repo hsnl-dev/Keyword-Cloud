@@ -325,7 +325,7 @@ curl http://localhost:9292/api/v1/accounts/1/1/1/makekeyword \
 ```
 {
   "data": "第 6 週: 進階持續威脅 (APT) 與入侵偵測防禦系統",
-  "slides": [
+  "content": [
     {
       "type": "keyword",
       "id": 1,

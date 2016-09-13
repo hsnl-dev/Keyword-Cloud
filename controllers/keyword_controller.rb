@@ -7,7 +7,7 @@ class KeywordCloudAPI < Sinatra::Base
       uid = params[:uid]
       course_id = params[:course_id]
       halt 401 unless authorized_account?(env, uid)
-      name = Course.where(id: course_id).first.course_name
+      coursename = Course.where(id: course_id).first.course_name
       keyword = Hash.new
       chap_folder = Folder.where(course_id: params[:course_id], chapter_id: params[:chapter_id]).all
       folderInfo = chap_folder.map do |f|
@@ -35,9 +35,9 @@ class KeywordCloudAPI < Sinatra::Base
             keyword: json)
         end
       end
-      JSON.pretty_generate(data: name, slides: info)
+      JSON.pretty_generate(data: coursename, content: info)
     rescue => e
-      logger.info "FAILED to process GET file document: #{e.inspect}"
+      logger.info "FAILED to make keyword: #{e.inspect}"
       halt 404
     end
   end
@@ -57,7 +57,7 @@ class KeywordCloudAPI < Sinatra::Base
       end
       JSON.pretty_generate(data: name, content: content)
     rescue => e
-      logger.info "FAILED to process GET file document: #{e.inspect}"
+      logger.info "FAILED to show keyword: #{e.inspect}"
       halt 404
     end
   end
