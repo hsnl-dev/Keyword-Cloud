@@ -78,11 +78,14 @@ for item in delete_list:
 
 # string to float
 for item in word_tfidf:
-    if float(word_tfidf.get(item)) > 3.0:
-        word_tfidf.update({item: float(word_tfidf.get(item))})
+    word_tfidf.update({item: float(word_tfidf.get(item))})
 
 for item in list(word_tfidf):
-    if float(word_tfidf.get(item)) < 4.0:
+    if float(word_tfidf.get(item)) < 40.0:
         word_tfidf.pop(item)
+
+for item in list(word_tfidf):
+    if float(word_tfidf.get(item)) > 1000.0:
+        word_tfidf.update({item: float(word_tfidf.get(item))/10})
 
 print(word_tfidf)
