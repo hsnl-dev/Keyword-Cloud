@@ -86,6 +86,6 @@ for item in list(word_tfidf):
 
 for item in list(word_tfidf):
     if float(word_tfidf.get(item)) > 1000.0:
-        word_tfidf.update({item: float(word_tfidf.get(item))/10})
+        word_tfidf.update({item: float(word_tfidf.get(item))/50})
 
 print(word_tfidf)
