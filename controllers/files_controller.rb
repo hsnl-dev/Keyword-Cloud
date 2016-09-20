@@ -20,6 +20,27 @@ class KeywordCloudAPI < Sinatra::Base
     saved_file.to_json
   end
 
+  delete '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/?' do
+    content_type 'application/json'
+    begin
+      folder_id = params[:folder_id]
+      uid = params[:uid]
+      halt 401 unless authorized_account?(env, uid)
+
+      delete_info = JSON.parse(request.body.read)
+      filename = delete_info['filename']
+      file = SimpleFile.where(filename: filename,
+                              folder_id: folder_id).first
+      DeleteFile.call(
+        file_id: file.id
+      )
+    rescue => e
+      logger.info "FAILED to file: #{e.inspect}"
+      halt 400
+    end
+    status 201
+  end
+
   post '/api/v1/accounts/:uid/:course_id/folders/:folder_id/?' do
     content_type 'application/json'
     begin
