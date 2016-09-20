@@ -7,7 +7,7 @@ class SlideSegment
     fileInfo = doc.map do |s|
       plain = Base64.strict_decode64(s.document)
       decoded = plain.force_encoding('UTF-8')
-      `python helpers/segment.py "#{decoded}"`
+      `python3 helpers/segment.py "#{decoded}"`
     end
     fileInfo
   end

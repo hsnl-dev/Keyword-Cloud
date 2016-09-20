@@ -4,6 +4,7 @@ import jieba
 import sys
 import re
 from nltk.stem import WordNetLemmatizer
+import operator
 
 if len(sys.argv) < 2:
     print('Usage: python3 [].py contents')
@@ -22,7 +23,7 @@ seg_list = jieba.cut(slides, cut_all=False)
 words_line = list(seg_list)
 words_line_clean = []
 for word in words_line:
-    if(re.match(pattern, word) is not None and word.encode('utf-8') not in stop):
+    if(re.match(pattern, word) is not None and word not in stop):
         words_line_clean.append(word)
 
 # 英文單字預處理
@@ -45,11 +46,11 @@ for i in range(len(words_line_clean)):
                 ngram_counts.update({ngram: 1})
             else:
                 ngram_counts.update({ngram: count+1})
-for key, value in sorted(ngram_counts.iteritems(), key=lambda (k, v): (v, k), reverse=True):
-    print("%s\t%s\n" % (key.encode('utf-8'), value))
 
-#     out.write("%s\t%s\n" % (key.encode('utf-8'), value))
-# for seg in seg_list:
-#     seg = ''.join(seg.split())
-#     if (seg != '' and seg != "\n" and seg != "\n\n"):
-#         print(seg)
+for key, value in sorted(ngram_counts.items(),
+                         key=operator.itemgetter(1),
+                         reverse=True):
+    print("%s\t%s\n" % (key, value))
+
+# for key, value in sorted(ngram_counts.iteritems(), key=lambda (k, v): (v, k), reverse=True):
+#     print("%s\t%s\n" % (key.encode('utf-8'), value))

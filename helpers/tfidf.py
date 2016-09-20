@@ -89,3 +89,4 @@ for item in list(word_tfidf):
         word_tfidf.update({item: float(word_tfidf.get(item))/50})
 
 print(word_tfidf)
+# print("%s" % (word_tfidf.encode('utf-8')))
