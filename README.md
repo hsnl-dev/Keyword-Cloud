@@ -304,6 +304,19 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/folders/3 \
 ]
 ```
 
+**DELETE /api/v1/accounts/:uid/:course_id/folders/:folder_id/files/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/files/ \
+ 	-X DELETE \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "filename": "1.txt"
+	}'
+```
+
+
 ### Keyword Routes
 #### Overview
 
