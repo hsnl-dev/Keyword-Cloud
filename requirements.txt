@@ -57,7 +57,6 @@ repoze.lru==0.6
 Routes==2.3.1
 ryu==4.1
 scikit-learn==0.17.1
-scikits.talkbox==0.2.5
 scipy==0.17.0
 simplegeneric==0.8.1
 singledispatch==3.4.0.3
