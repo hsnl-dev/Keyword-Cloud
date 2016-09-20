@@ -9,7 +9,6 @@ decorator==4.0.9
 entrypoints==0.2.2
 eventlet==0.18.4
 flake8==2.5.4
-functools32==3.2.3.post2
 future==0.15.2
 gnureadline==6.3.3
 greenlet==0.4.9
