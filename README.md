@@ -188,7 +188,8 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/folders/ \
 | ------  | ----------------------------------------------| ---------------------------------------------- |
 | GET     | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}  |  file of this course |
 | POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | create new file for folder |
-| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/  | create new folder for subtitles |
+| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/  | create video url for chapter |
+| DELETE    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | delete a certain file |
 
 #### Example
 
