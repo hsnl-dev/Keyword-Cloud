@@ -5,7 +5,7 @@ require "rack-timeout"
 class KeywordCloudAPI < Sinatra::Base
   enable :logging
 
-  use Rack::Timeout, service_timeout: 500
+  use Rack::Timeout, service_timeout: 200, wait_timeout: false
 
   def authenticated_account(env)
     scheme, auth_token = env['HTTP_AUTHORIZATION'].split(' ')
