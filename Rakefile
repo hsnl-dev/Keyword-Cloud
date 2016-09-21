@@ -5,6 +5,13 @@ require 'rake/testtask'
 
 task :default => [:spec]
 
+# namespace :deploy do
+#   task :config do
+#     require "rack-timeout"
+#     use Rack::Timeout, service_timeout: 30
+#   end
+# end
+
 namespace :db do
   require 'sequel'
   Sequel.extension :migration

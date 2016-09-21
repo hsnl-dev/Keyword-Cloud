@@ -1,9 +1,7 @@
-require "rack-timeout"
 # show keyword
 class KeywordCloudAPI < Sinatra::Base
   get '/api/v1/accounts/:uid/:course_id/:chapter_id/makekeyword' do
     content_type 'application/json'
-    use Rack::Timeout, service_timeout: 30
     begin
       uid = params[:uid]
       course_id = params[:course_id]
