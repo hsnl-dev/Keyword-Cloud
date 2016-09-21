@@ -14,7 +14,7 @@ gem 'rack-ssl-enforcer'
 gem 'jose'
 gem 'mongo'
 gem 'http'
-
+gem "rack-timeout"
 
 group :development do
   gem 'rerun'
