@@ -39,6 +39,7 @@ GEM
     rack-ssl-enforcer (0.2.9)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack-timeout (0.4.2)
     rake (11.2.2)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
@@ -88,6 +89,7 @@ DEPENDENCIES
   pg
   puma
   rack-ssl-enforcer
+  rack-timeout
   rake
   rbnacl-libsodium
   rerun
@@ -100,4 +102,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.12.5
+   1.13.1
