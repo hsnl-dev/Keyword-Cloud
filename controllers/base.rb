@@ -1,9 +1,11 @@
 require 'sinatra'
 require 'json'
-
+require "rack-timeout"
 # Configuration Sharing Web Service
 class KeywordCloudAPI < Sinatra::Base
   enable :logging
+
+  use Rack::Timeout, service_timeout: 500
 
   def authenticated_account(env)
     scheme, auth_token = env['HTTP_AUTHORIZATION'].split(' ')
