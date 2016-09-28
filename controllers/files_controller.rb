@@ -20,6 +20,29 @@ class KeywordCloudAPI < Sinatra::Base
     saved_file.to_json
   end
 
+  post '/api/v1/accounts/:uid/:course_id/folders/:folder_id/:video_id/files/?' do
+    content_type 'application/json'
+    begin
+      uid = params[:uid]
+      halt 401 unless authorized_account?(env, uid)
+
+      new_data = JSON.parse(request.body.read)
+      video_id = params[:video_id]
+      folder = Folder[params[:folder_id]]
+      saved_file = CreateFileForSubtitle.call(
+        folder: folder,
+        video_id: video_id,
+        filename: new_data['filename'],
+        document: new_data['document'])
+    rescue => e
+      logger.info "FAILED to create new file: #{e.inspect}"
+      halt 400
+    end
+
+    status 201
+    saved_file.to_json
+  end
+
   delete '/api/v1/accounts/:uid/:course_id/folders/:folder_id/files/?' do
     content_type 'application/json'
     begin
@@ -32,6 +55,29 @@ class KeywordCloudAPI < Sinatra::Base
       file = SimpleFile.where(filename: filename,
                               folder_id: folder_id).first
       DeleteFile.call(
+        file_id: file.id
+      )
+    rescue => e
+      logger.info "FAILED to file: #{e.inspect}"
+      halt 400
+    end
+    status 201
+  end
+
+  delete '/api/v1/accounts/:uid/:course_id/folders/:folder_id/:video_id/files/?' do
+    content_type 'application/json'
+    begin
+      folder_id = params[:folder_id]
+      video_id = params[:video_id]
+      uid = params[:uid]
+      halt 401 unless authorized_account?(env, uid)
+
+      delete_info = JSON.parse(request.body.read)
+      filename = delete_info['filename']
+      file = Subtitle.where(filename: filename,
+                            folder_id: folder_id,
+                            video_id: video_id).first
+      DeleteSubtitle.call(
         file_id: file.id
       )
     rescue => e
@@ -70,16 +116,31 @@ class KeywordCloudAPI < Sinatra::Base
       halt 401 unless authorized_account?(env, uid)
       folder_name = Folder.where(id: folder_id).first.name
       folder_type = Folder.where(id: folder_id).first.folder_type
-      simplefile = SimpleFile.where(folder_id: folder_id).all
-      fileInfo = simplefile.map do |s|
-        {
-          'id' => s.id,
-          'data' => {
-            'filename' => s.filename,
-            'document_encrypted' => s.document_encrypted,
-            'checksum' => s.checksum
+      if folder_type == 'subtitles'
+        subtitle = Subtitle.where(folder_id: folder_id).all
+        fileInfo = subtitle.map do |s|
+          {
+            'id' => s.id,
+            'data' => {
+              'filename' => s.filename,
+              'video_id' => s.video_id,
+              'document_encrypted' => s.document_encrypted,
+              'checksum' => s.checksum
+            }
           }
-        }
+        end
+      elsif
+        simplefile = SimpleFile.where(folder_id: folder_id).all
+        fileInfo = simplefile.map do |s|
+          {
+            'id' => s.id,
+            'data' => {
+              'filename' => s.filename,
+              'document_encrypted' => s.document_encrypted,
+              'checksum' => s.checksum
+            }
+          }
+        end
       end
       JSON.pretty_generate(course_id: course_id, folder_name: folder_name, folder_id: folder_id, folder_type: folder_type, data: fileInfo)
     rescue => e
