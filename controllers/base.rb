@@ -5,8 +5,6 @@ require 'json'
 class KeywordCloudAPI < Sinatra::Base
   enable :logging
 
-  # use Rack::Timeout, service_timeout: 200, wait_timeout: false
-
   def authenticated_account(env)
     scheme, auth_token = env['HTTP_AUTHORIZATION'].split(' ')
     account_payload = JSON.load JWE.decrypt(auth_token)
