@@ -1,15 +1,17 @@
 require 'base64'
 
 class SubtitleSegment
-  def self.call(folder_id:, slide:)
-    doc = SimpleFile.where(folder_id: folder_id)
-                    .all
-    fileInfo = doc.map do |s|
+  def self.call(course_id:, folder_id:, chapter_order:)
+    doc = Subtitle.where(folder_id: folder_id).all
+    doc.map do |s|
       plain = Base64.strict_decode64(s.document)
-      decoded = plain.force_encoding('UTF-8')
-      `python3 helpers/subtitle_segment.py "#{decoded}" "#{slide}"`
+      # directory_name = "../Subtitle-Keyword/subtitle_file/" + chapter_order.to_s + "/"
+      directory_name = "../" + chapter_order.to_s + "/"
+      Dir.mkdir(directory_name) unless File.exists?(directory_name)
+      # txt_path = "../Subtitle-Keyword/subtitle_file/" + chapter_order.to_s + "/" + s.video_id.to_s + ".txt"
+      txt_path = "../" + chapter_order.to_s + "/" + s.video_id.to_s + ".txt"
+      File.open(txt_path, 'w') { |file| file.write(plain) }
+      txt_path
     end
-    puts fileInfo
-    fileInfo
   end
 end
