@@ -1,6 +1,6 @@
 require 'base64'
 
-class SubtitleSegment
+class GetSubtitle
   def self.call(course_id:, folder_id:, chapter_order:)
     doc = Subtitle.where(folder_id: folder_id).all
     doc.map do |s|

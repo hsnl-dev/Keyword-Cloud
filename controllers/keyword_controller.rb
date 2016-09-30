@@ -51,7 +51,7 @@ class KeywordCloudAPI < Sinatra::Base
       keyword = Hash.new
       chap_folder = Folder.where(course_id: params[:course_id], chapter_id: params[:chapter_id], folder_type: 'subtitles').all
       folderInfo = chap_folder.map do |f|
-        keyword.merge!({f.id => SubtitleSegment.call(course_id: course_id, folder_id: f.id, chapter_order: f.chapter_order-1)})
+        keyword.merge!({f.id => GetSubtitle.call(course_id: course_id, folder_id: f.id, chapter_order: f.chapter_order-1)})
         keyword[f.id]
       end
       JSON.pretty_generate(data: coursename, path: folderInfo)
