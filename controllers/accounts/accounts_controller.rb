@@ -26,4 +26,18 @@ class KeywordCloudAPI < Sinatra::Base
       halt 404
     end
   end
+
+  get '/api/v1/videos' do
+    content_type 'application/json'
+    begin
+      course_arr = Folder.select(:course_id).map(&:course_id).uniq
+      course_arr.map do |id|
+        courseInfo = FindChapterVideo.call(course_id: id)
+      end
+      JSON.pretty_generate(data: name)
+    rescue => e
+      logger.info "FAILED to find authorized courses for account: #{e}"
+      halt 404
+    end
+  end
 end
