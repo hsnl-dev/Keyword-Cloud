@@ -8,7 +8,7 @@ class KeywordCloudAPI < Sinatra::Base
       halt 401 unless authorized_account?(env, uid)
       coursename = Course.where(id: course_id).first.course_name
       keyword = Hash.new
-      chap_folder = Folder.where(course_id: params[:course_id], chapter_id: params[:chapter_id], folder_type: 'slides').all
+      chap_folder = Folder.where(course_id: params[:course_id], chapter_id: params[:chapter_id]).all
       folderInfo = chap_folder.map do |f|
         keyword.merge!({f.id => SlideSegment.call(folder_id: f.id)})
         keyword[f.id]
@@ -35,26 +35,6 @@ class KeywordCloudAPI < Sinatra::Base
         end
       end
       JSON.pretty_generate(data: coursename, content: info)
-    rescue => e
-      logger.info "FAILED to make keyword: #{e.inspect}"
-      halt 404
-    end
-  end
-
-  get '/api/v1/accounts/:uid/:course_id/:chapter_id/getsubtitle' do
-    content_type 'application/json'
-    begin
-      uid = params[:uid]
-      course_id = params[:course_id]
-      halt 401 unless authorized_account?(env, uid)
-      coursename = Course.where(id: course_id).first.course_name
-      keyword = Hash.new
-      chap_folder = Folder.where(course_id: params[:course_id], chapter_id: params[:chapter_id], folder_type: 'subtitles').all
-      folderInfo = chap_folder.map do |f|
-        keyword.merge!({f.id => GetSubtitle.call(course_id: course_id, folder_id: f.id, chapter_order: f.chapter_order-1)})
-        keyword[f.id]
-      end
-      JSON.pretty_generate(data: coursename, path: folderInfo)
     rescue => e
       logger.info "FAILED to make keyword: #{e.inspect}"
       halt 404
