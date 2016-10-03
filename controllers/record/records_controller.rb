@@ -48,7 +48,6 @@ class KeywordCloudAPI < Sinatra::Base
     content_type 'application/json'
     begin
       course_id = params[:course_id]
-      # coursename = Course.where(id: course_id).first.course_name
       chid = FindCourseKeyword.call(course_id: course_id)
       keywordInfo = chid.map do |id, contents|
         folderInfo = Folder.where(course_id: course_id, chapter_id: id, folder_type: 'subtitles').first
