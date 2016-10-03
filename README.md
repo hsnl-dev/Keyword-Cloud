@@ -187,9 +187,11 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/folders/ \
 | Method  | URL                                           | What to do                                     |
 | ------  | ----------------------------------------------| ---------------------------------------------- |
 | GET     | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}  |  file of this course |
-| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | create new file for folder |
 | POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/  | create video url for chapter |
-| DELETE    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | delete a certain file |
+| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | create new file(concept & slide) for folder |
+| POST    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/{video_id}/files/  | create new file(subtitle) for folder |
+| DELETE    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/files/  | delete a certain file(concept & slide) |
+| DELETE    | /api/v1/accounts/{uid}/{course_id}/folders/{folder_id}/{video_id}/files/  | delete a certain file(subtitle) |
 
 #### Example
 
@@ -221,33 +223,6 @@ curl http://localhost:9292/api/v1/accounts/1/1/folders/3 \
       }
     }
   ]
-}
-```
-
-**POST /api/v1/accounts/:uid/:course_id/folders/:folder_id/files/**
-
-```shell
-$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/files/ \
- 	-X POST \
-	-H 'content-type: application/json' \
-	-H 'authorization: bearer {auth_token}' \
-	-d '{
-    "filename": "1.txt",
-		"document": "XXXXXXXXOOOOOOOO"
-	}'
-```
-
-```
-{
-  "type": "files",
-  "id": "978e09d4-5eb4-4b1c-a4a1-37cd6fbd6aa0",
-  "data": {
-    "folder_id": 3,
-    "filename": "1.txt",
-    "checksum": null,
-    "document_base64": "MTExMTExMTExMTEx",
-    "document": "111111111111"
-  }
 }
 ```
 
@@ -304,10 +279,77 @@ $ curl http://localhost:9292/api/v1/accounts/1/1/folders/3 \
 ]
 ```
 
+**POST /api/v1/accounts/:uid/:course_id/folders/:folder_id/files/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/files/ \
+ 	-X POST \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "filename": "1.txt",
+		"document": "XXXXXXXXOOOOOOOO"
+	}'
+```
+
+```
+{
+  "type": "files",
+  "id": "978e09d4-5eb4-4b1c-a4a1-37cd6fbd6aa0",
+  "data": {
+    "folder_id": 3,
+    "filename": "1.txt",
+    "checksum": null,
+    "document_base64": "MTExMTExMTExMTEx",
+    "document": "111111111111"
+  }
+}
+```
+
+**POST /api/v1/accounts/:uid/:course_id/folders/:folder_id/:video_id/files/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/1/files/ \
+ 	-X POST \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "filename": "1.txt",
+		"document": "XXXXXXXXOOOOOOOO"
+	}'
+```
+
+```
+{
+  "type": "subtitles",
+  "id": "978e09d4-5eb4-4b1c-a4a1-37cd6fbd6aa0",
+  "data": {
+    "folder_id": 3,
+    "filename": "1.txt",
+		"video_id": 1,
+    "checksum": null,
+    "document_base64": "MTExMTExMTExMTEx",
+    "document": "111111111111"
+  }
+}
+```
+
 **DELETE /api/v1/accounts/:uid/:course_id/folders/:folder_id/files/**
 
 ```shell
 $ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/files/ \
+ 	-X DELETE \
+	-H 'content-type: application/json' \
+	-H 'authorization: bearer {auth_token}' \
+	-d '{
+    "filename": "1.txt"
+	}'
+```
+
+**DELETE /api/v1/accounts/:uid/:course_id/folders/:folder_id/:video_id/files/**
+
+```shell
+$ curl http://localhost:9292/api/v1/accounts/1/1/folders/3/1/files/ \
  	-X DELETE \
 	-H 'content-type: application/json' \
 	-H 'authorization: bearer {auth_token}' \
@@ -381,6 +423,144 @@ curl http://localhost:9292/api/v1/accounts/1/1/1/showkeyword \
       "keyword": "{'比對': 19.0, 'IPS': 24.0, 'IDS': 31.0, 'intrusion detection system': 18.0, '特徵碼': 15.0, '電腦': 4.0, '晶片 ASIC': 4.5, 'APT': 45.0, '威脅': 22.0, '字串': 20.0, '封包': 15.0, '組織': 4.0, '警報': 5.0, '攻擊': 21.0, 'string': 13.0, '偵測': 14.0, '情報收集技術': 6.0, 'content 屬於第七層設備 layer': 6.0, '程式': 8.0, '需要': 7.0}\n"
     }
   }
+}
+```
+
+### Record Routes
+#### Overview
+
+| Method  | URL             | What to do                |
+| ------  | ----------------|--------------------------- |
+| GET     | /api/v1/mongo/{course_id}  |  Get action of student |
+| GET     | /api/v1/videos  |  Get chapter and video of course |
+| GET     | /api/v1/courses/subtitles/{course_id}  |  Download subtitle of this course|
+| GET     | /api/v1/mix/{course_id}  |  Mix subtitle's keyword with slide's keyword |
+| GET     | /api/v1/shellscript  |  Get course that has keyword |
+| GET     | /api/v1/courses/keywords/{course_id}  |  Get keyword of course |
+
+
+#### Example
+
+**GET /api/v1/mongo/:course_id**
+
+```shell
+curl http://localhost:9292/api/v1/mongo/1 \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "status": "success"
+}
+```
+
+**GET /api/v1/videos**
+
+```shell
+curl http://localhost:9292/api/v1/videos \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "status": "success"
+}
+```
+
+**GET /api/v1/courses/subtitles/:course_id**
+
+```shell
+curl http://localhost:9292/api/v1/courses/subtitles/1 \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "data": "2016 網軍大進擊 ",
+  "path": [
+    [],
+    [
+      "../XXX/XXXX/1/1/1.txt",
+      "../XXX/XXXX/1/1/2.txt",
+      "../XXX/XXXX/1/1/3.txt"
+    ],
+    [
+			"../XXX/XXXX/1/2/1.txt",
+			"../XXX/XXXX/1/2/2.txt",
+			"../XXX/XXXX/1/2/3.txt",
+			"../XXX/XXXX/1/2/4.txt"
+    ]
+	]
+}
+```
+
+**GET /api/v1/mix/:course_id**
+
+```shell
+curl http://localhost:9292/api/v1/mix/1 \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "data": [
+    {
+      "type": "keyword",
+      "id": 2,
+      "attributes": {
+        "course_id": 1,
+        "folder_id": 1,
+        "priority": 1,
+        "folder_type": "subtitles",
+        "chapter_id": 1,
+        "chapter_name": "第 6 週: 進階持續威脅 (APT) 與入侵偵測防禦系統",
+        "keyword": "XXXXXXXXX"
+      }
+    }
+  ]
+}
+```
+
+**GET /api/v1/shellscript**
+
+```shell
+curl http://localhost:9292/api/v1/shellscript \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "data": "1 2 3"
+}
+```
+
+**GET /api/v1/courses/keywords/:course_id**
+
+```shell
+curl http://localhost:9292/api/v1/courses/keywords/1 \
+	-H 'content-type: application/json'
+```
+
+```
+{
+  "status": [
+    {
+      "id": 1,
+      "chapter_id": 1,
+      "chapter_name": "第 6 週: 進階持續威脅 (APT) 與入侵偵測防禦系統",
+      "folder_type": "slides",
+      "priority": 2,
+      "keyword": "XXXXXX"
+    },
+		{
+			"id": 2,
+      "chapter_id": 1,
+      "chapter_name": "第 6 週: 進階持續威脅 (APT) 與入侵偵測防禦系統",
+      "folder_type": "subtitles",
+      "priority": 1,
+      "keyword": "XXXXXX"
+		}
+	]
 }
 ```
 
