@@ -60,4 +60,22 @@ class KeywordCloudAPI < Sinatra::Base
       halt 404
     end
   end
+
+  post '/api/v1/accounts/:uid/:course_id/:chapter_id/postkeyword' do
+    content_type 'application/json'
+    begin
+      uid = params[:uid]
+      course_id = params[:course_id]
+      chapter_id = params[:chapter_id]
+      halt 401 unless authorized_account?(env, uid)
+      delete_keyword_arr = JSON.parse(request.body.read)
+      DeleteKeyword.call(course_id: course_id,
+                         chapter_id: chapter_id,
+                         delete_keyword: delete_keyword_arr['delete_keyword'])
+      JSON.pretty_generate(status: 'succeed to modify keywords')
+    rescue => e
+      logger.info "FAILED to post keyword: #{e.inspect}"
+      halt 404
+    end
+  end
 end
