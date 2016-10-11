@@ -41,6 +41,29 @@ class KeywordCloudAPI < Sinatra::Base
     end
   end
 
+  get '/api/v1/keywords/:uid/:course_id' do
+    content_type 'application/json'
+    begin
+      uid = params[:uid]
+      course_id = params[:course_id]
+      halt 401 unless authorized_account?(env, uid)
+      # course_id = Keyword.where(course_id: course_id).select(:chapter_id).map(&:chapter_id).uniq
+      keyword_set = Keyword.where(course_id: course_id, folder_type: 'slides').all
+      keyword_info = keyword_set.map do |k|
+        {
+          'course_id' => k.course_id,
+          'chapter_id' => k.chapter_id,
+          'chapter_name' => k.chapter_name,
+          'keyword' => k.keyword
+        }
+      end
+      JSON.pretty_generate(content: keyword_info)
+    rescue => e
+      logger.info "FAILED to connect sqlite: #{e}"
+      halt 404
+    end
+  end
+
   get '/api/v1/accounts/:uid/:course_id/:chapter_id/showkeyword' do
     content_type 'application/json'
     begin
@@ -49,11 +72,7 @@ class KeywordCloudAPI < Sinatra::Base
       chapter_id = params[:chapter_id]
       halt 401 unless authorized_account?(env, uid)
       name = Course.where(id: course_id).first.course_name
-      if Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 1).first
-        content = Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 1).first
-      else
-        content = Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 2).first
-      end
+      content = Keyword.where(course_id: course_id, chapter_id: chapter_id, priority: 2).first
       JSON.pretty_generate(data: name, content: content)
     rescue => e
       logger.info "FAILED to show keyword: #{e.inspect}"
