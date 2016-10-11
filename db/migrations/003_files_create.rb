@@ -8,6 +8,7 @@ Sequel.migration do
 
       String :filename
       String :document_encrypted, text: true
+      String :ori_document_encrypted, text: true
       String :checksum, unique: true, text: true
       DateTime :created_at
       DateTime :updated_at

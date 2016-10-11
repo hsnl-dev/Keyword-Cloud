@@ -19,8 +19,17 @@ class SimpleFile < Sequel::Model
     SecureDB.decrypt(document_encrypted)
   end
 
+  def ori_document=(ori_doc_plaintext)
+    self.ori_document_encrypted = SecureDB.encrypt(ori_doc_plaintext) if ori_doc_plaintext
+  end
+
+  def ori_document
+    SecureDB.decrypt(ori_document_encrypted)
+  end
+
   def to_json(options = {})
     doc = document ? Base64.strict_encode64(document) : nil
+    ori_doc = ori_document ? Base64.strict_encode64(ori_document) : nil
     JSON({  type: 'files',
             id: id,
             data: {
@@ -28,7 +37,9 @@ class SimpleFile < Sequel::Model
               filename: filename,
               checksum: checksum,
               document_base64: doc,
-              document: document
+              document: document,
+              ori_document_base64: ori_doc,
+              ori_document: ori_document
             }
           },
          options)
