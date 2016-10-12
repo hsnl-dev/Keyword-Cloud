@@ -13,6 +13,8 @@ else:
 
 slide = json.loads(slide.replace("'", '"'))
 delete_arr = ast.literal_eval(delete_arr)
-for item in list(delete_arr):
+
+for item in delete_arr:
+    # print(item)
     slide.pop(item)
 print(slide)
