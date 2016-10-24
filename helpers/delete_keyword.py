@@ -14,7 +14,14 @@ else:
 slide = json.loads(slide.replace("'", '"'))
 delete_arr = ast.literal_eval(delete_arr)
 
-for item in delete_arr:
-    # print(item)
-    slide.pop(item)
-print(slide)
+if isinstance(delete_arr, tuple):
+    delete_arr = list(delete_arr)
+    for item in delete_arr:
+        slide.pop(item)
+    print(slide)
+elif isinstance(delete_arr, str):
+    arr = []
+    arr.append(delete_arr)
+    for item in arr:
+        slide.pop(item)
+    print(slide)
